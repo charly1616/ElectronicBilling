@@ -1,4 +1,5 @@
 import flet as ft
+<<<<<<< Updated upstream
 
 
 
@@ -60,6 +61,9 @@ class NavigationColumn(ft.Container):
 
 
 
+=======
+ 
+>>>>>>> Stashed changes
 class ManagerView(ft.View):
     def __init__(self, title: str = "Default Title", controls: list = None, **kwargs):
         super().__init__(route="/login", **kwargs)  # You must provide a `route` for the view
@@ -74,7 +78,6 @@ class ManagerView(ft.View):
         content.controls.append(NavigationColumn("<Nombre Empresa>"))
         content.controls.append(ft.VerticalDivider(width=1))
         # Add a divider for visual separation
-    
     
     def changePage(p):
         pass

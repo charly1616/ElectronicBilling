@@ -1,6 +1,5 @@
 import flet as ft
  
-
 class RegisterView(ft.View):
     def __init__(self, title: str = "Default Title", controls: list = None, **kwargs):
         super().__init__(route="/login", **kwargs)  # You must provide a `route` for the view
