@@ -1,9 +1,9 @@
 import flet as ft 
 
 class EmployeeView(ft.View):
-    def __init__(self):
+    def __init__(self, title = "", controls: list = None, **kwargs):
         super().__init__()  # You must provide a `route` for the view
-        self.title = title
+        self.title = ""
         self.controls = []
         self.padding = 20
         self.scroll = "adaptive"
@@ -43,13 +43,11 @@ class EmployeeView(ft.View):
             self.update()
 
         # Botón para agregar la fila fija
-        boton_agregar_fijo = ft.ElevatedButton("Agregar Erick", on_click=agregar_fila_fija)
-
+        boton_agregar_fijo = ft.ElevatedButton("Agregar pera", on_click=agregar_fila_fija)
+        
         # Añadir componentes a la página
-        self.control.add(
-            boton_agregar_fijo,
-            tabla
-        )
+        self.controls = [boton_agregar_fijo,
+            tabla]
         self._setup_view()
 
     def _setup_view(self):
