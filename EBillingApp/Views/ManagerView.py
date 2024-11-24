@@ -1,5 +1,4 @@
 import flet as ft
-<<<<<<< Updated upstream
 
 
 
@@ -61,9 +60,7 @@ class NavigationColumn(ft.Container):
 
 
 
-=======
  
->>>>>>> Stashed changes
 class ManagerView(ft.View):
     def __init__(self, title: str = "Default Title", controls: list = None, **kwargs):
         super().__init__(route="/login", **kwargs)  # You must provide a `route` for the view

@@ -3,7 +3,7 @@ import flet as ft
 class EmployeeView(ft.View):
     def __init__(self):
         super().__init__()  # You must provide a `route` for the view
-        self.title = "Vista Empleado"
+        self.title = title
         self.controls = []
         self.padding = 20
         self.scroll = "adaptive"
@@ -38,7 +38,7 @@ class EmployeeView(ft.View):
 
         # Función para añadir "Erick, 20, Barranquilla" al hacer clic
         def agregar_fila_fija(e):
-            datos.append({"Nombre": "Erick", "Edad": 20, "Ciudad": "Barranquilla"})
+            datos.append({"Item": "Pera", "Cantidad": 1, "Subtotal": "1000"})
             tabla.rows = generar_filas()
             self.update()
 
