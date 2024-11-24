@@ -12,10 +12,10 @@ class LoginView(ft.View):
     def _setup_view(self):
         image = ft.Container(height=380,width=380,bgcolor=ft.colors.WHITE)
         LoginPart = ft.Column()
-        LoginPart.controls.append(ft.Text("Welcome to the login page.", size=20))
-        LoginPart.controls.append(ft.TextField(label="Username"))
-        LoginPart.controls.append(ft.TextField(label="Password", password=True))
-        LoginPart.controls.append(ft.ElevatedButton("Login", on_click=lambda _: print("Login clicked!")))
-        LoginPart.controls.append(ft.ElevatedButton("Register", on_click=lambda _: print("Register clicked!")))
+        LoginPart.controls.append(ft.Text("E-FacturaNet", size=24))
+        LoginPart.controls.append(ft.TextField(label="Email"))
+        LoginPart.controls.append(ft.TextField(label="Contraseña", password=True))
+        LoginPart.controls.append(ft.ElevatedButton("Iniciar Sesión", on_click=lambda _: print("Login clicked!")))
+        LoginPart.controls.append(ft.ElevatedButton("Crear cuenta", on_click=lambda _: self.page.go("/Register")))
 
         self.cont.controls = [image, LoginPart]

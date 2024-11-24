@@ -8,18 +8,34 @@ def main(page: ft.Page):
     page.window_width = 800
     page.window_height = 500
     loginView = LoginView(title="Login Page")
-    registerView = ft.View()
+    registerView = RegisterView(title="Register Page")
+    managerView = ManagerView(title="Manager")
+    employeeView = EmployeeView(title="Employee")
 
+    def get_route_list(route):
+        route_list = [item for item in route.split("/") if item != ""]
+        return route_list
     
     def route_change(e):
+        routeList = get_route_list(page.route)
+
         page.views.clear()
         page.views.append(loginView)
-        if page.route == "/Register":
+
+        if len(routeList) == 0:
+            page.update()
+            return
+        
+        if routeList[0] == "Register":
             page.views.append(registerView)
-        elif page.route == "/Manager":
-            page.views.append(registerView)
-        elif page.route == "/Employee":
-            page.views.append(registerView)
+        elif routeList[0] == "Manager":
+            page.views.append(managerView)
+            if len(routeList) == 2:
+                managerView.changePage(routeList[1])
+        elif routeList[0] == "Employee":
+            page.views.append(employeeView)
+            
+        
         page.update()
 
     def view_pop(e):

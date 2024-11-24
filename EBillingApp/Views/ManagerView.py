@@ -1,6 +1,46 @@
 import flet as ft
  
 
-class ManagerView(ft.Row):
-    def __init__(self, controls = None, alignment = None, vertical_alignment = None, spacing = None, tight = None, wrap = None, run_spacing = None, scroll = None, auto_scroll = None, on_scroll_interval = None, on_scroll = None, ref = None, key = None, width = None, height = None, left = None, top = None, right = None, bottom = None, expand = None, expand_loose = None, col = None, opacity = None, rotate = None, scale = None, offset = None, aspect_ratio = None, animate_opacity = None, animate_size = None, animate_position = None, animate_rotation = None, animate_scale = None, animate_offset = None, on_animation_end=None, visible = None, disabled = None, data = None, rtl = None, adaptive = None):
-        super().__init__(controls, alignment, vertical_alignment, spacing, tight, wrap, run_spacing, scroll, auto_scroll, on_scroll_interval, on_scroll, ref, key, width, height, left, top, right, bottom, expand, expand_loose, col, opacity, rotate, scale, offset, aspect_ratio, animate_opacity, animate_size, animate_position, animate_rotation, animate_scale, animate_offset, on_animation_end, visible, disabled, data, rtl, adaptive)
+class ManagerView(ft.View):
+    def __init__(self, title: str = "Default Title", controls: list = None, **kwargs):
+        super().__init__(route="/login", **kwargs)  # You must provide a `route` for the view
+        self.title = title
+        self.cont = ft.Row(controls=[], expand=True)
+        self.controls = [self.cont]
+        self._setup_view()
+
+    def _setup_view(self):
+        content = self.cont
+
+        content.controls.append(ft.NavigationRail(
+            selected_index=0,
+            label_type=ft.NavigationRailLabelType.ALL,
+            # extended=True,
+            min_width=100,
+            min_extended_width=400,
+            group_alignment=-0.9,
+            destinations=[
+                ft.NavigationRailDestination(
+                    icon=ft.icons.FAVORITE_BORDER, selected_icon=ft.icons.FAVORITE, label="First"
+                ),
+                ft.NavigationRailDestination(
+                    icon_content=ft.Icon(ft.icons.BOOKMARK_BORDER),
+                    selected_icon_content=ft.Icon(ft.icons.BOOKMARK),
+                    label="Second",
+                ),
+                ft.NavigationRailDestination(
+                    icon=ft.icons.SETTINGS_OUTLINED,
+                    selected_icon_content=ft.Icon(ft.icons.SETTINGS),
+                    label_content=ft.Text("Settings"),
+                ),
+            ],
+            on_change=lambda e: print("Selected destination:", e.control.selected_index),
+        ))
+        content.controls.append(ft.VerticalDivider(width=1))
+        self.controls.insert(0, ft.Text(self.title, size=24, weight="bold"))
+        # Add a divider for visual separation
+        self.controls.insert(1, ft.Divider())
+    
+    
+    def changePage(p):
+        pass

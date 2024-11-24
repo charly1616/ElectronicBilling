@@ -14,3 +14,4 @@ class EmployeeView(ft.View):
         self.controls.insert(0, ft.Text(self.title, size=24, weight="bold"))
         # Add a divider for visual separation
         self.controls.insert(1, ft.Divider())
+    
