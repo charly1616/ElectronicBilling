@@ -1,6 +1,14 @@
 import flet as ft
+from Models.BillingModel import Billing
+from datetime import datetime
 
-
+class BillRow(ft.DataRow):
+    def __init__(self, billing:Billing):
+        super().__init__()
+        self.cells = [
+            ft.DataCell(ft.TextButton(billing.getName)),
+            ft.DataCell(ft.Text(billing.date))
+        ]
 
 #NavigationColumn es un container con dos columns
 class NavigationColumn(ft.Container):
@@ -25,19 +33,19 @@ class NavigationColumn(ft.Container):
             spacing=4,
             alignment=ft.MainAxisAlignment.CENTER,
             controls=[
-            ft.Text("Manager", text_align=ft.TextAlign.CENTER),
-            ft.Text("<hh.mm.ss>", text_align=ft.TextAlign.CENTER),
-            ft.Text("<dd.mm.yyyy>", text_align=ft.TextAlign.CENTER),
+            ft.Text("Manager", text_align=ft.TextAlign.CENTER, size=23),
+            ft.Text(datetime.now().strftime("%H:%M:%S"), text_align=ft.TextAlign.CENTER),
+            ft.Text(datetime.today().date(), text_align=ft.TextAlign.CENTER),
         ]),
-        height=150,
+        height=120,
         width= 200
         )
         navigationButtons = ft.Container(content=ft.Column(
             spacing=4,
             alignment=ft.MainAxisAlignment.CENTER,
             controls=[
-                ft.TextButton(text="Boton1", width=180),
-                ft.TextButton(text="Boton2", width=180)
+                ft.TextButton(text="Regristro de recibos diarios", width=180, style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=5))),
+                ft.TextButton(text="Inventario", width=180,style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=5)))
             ]
         ),
         height=150
@@ -67,6 +75,9 @@ class ManagerView(ft.View):
         self.title = title
         self.cont = ft.Row(controls=[], expand=True)
         self.controls = [self.cont]
+        self.BillingsPage = ft.Column(expand=True, visible=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        self.BillingRows = []
+        self.Inventory = ft.Column(expand=True, visible=False)
         self._setup_view()
 
     def _setup_view(self):
@@ -74,7 +85,36 @@ class ManagerView(ft.View):
 
         content.controls.append(NavigationColumn("<Nombre Empresa>"))
         content.controls.append(ft.VerticalDivider(width=1))
+        content.controls.append(self.BillingsPage)
+        content.controls.append(self.Inventory)
         # Add a divider for visual separation
+
+        self.BillingRows =[
+            ft.DataRow(cells=
+            [
+                ft.DataCell(ft.Text("UWU")),
+                ft.DataCell(ft.Text("Escribe"))
+            ]),
+            ft.DataRow(cells=
+            [
+                ft.DataCell(ft.Text("UWU")),
+                ft.DataCell(ft.Text("Escribe"))
+            ])
+        ]
+
+        self.BillingsPage.controls = [
+            ft.Text("Registro de Recibos diarios"),
+            ft.Column(
+                scroll=ft.ScrollMode.ADAPTIVE,
+                controls=[ft.DataTable(
+                    columns=[
+                        ft.DataColumn(ft.Text("Nombre del archivo")),
+                        ft.DataColumn(ft.Text("Fecha de creación"))
+                    ],
+                    rows=self.BillingRows
+                    )]
+                )
+            ]
     
     def changePage(p):
         pass

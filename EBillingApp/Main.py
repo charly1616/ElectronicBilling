@@ -10,9 +10,9 @@ def main(page: ft.Page):
     loginView = LoginView(title="Login Page")
     registerView = RegisterView(title="Register Page")
     managerView = ManagerView(title="Manager")
-    employeeView = EmployeeView(title="Employee")
+    employeeView = EmployeeView()
 
-    page.route = "Employee"
+    page.route = "Manager"
     def get_route_list(route):
         route_list = [item for item in route.split("/") if item != ""]
         return route_list
