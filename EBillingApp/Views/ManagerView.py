@@ -3,13 +3,23 @@ from Models.BillingModel import Billing
 from datetime import datetime
 
 class BillRow(ft.DataRow):
-    def __init__(self, billing:Billing):
-        super().__init__()
+    def __init__(self, billing:Billing,cells: list = None, **kwargs):
+        super().__init__(**kwargs)
         self.cells = [
-            ft.DataCell(ft.TextButton(billing.getName)),
+            ft.DataCell(ft.TextButton(billing.getName())),
             ft.DataCell(ft.Text(billing.date))
         ]
 
+
+class ItemRow(ft.DataRow):
+    def __init__(self, name="plumbus",price=30_000,stock=911):
+        super().__init__()
+        self.cells = [
+            ft.DataCell(ft.TextField(value=name,border=ft.InputBorder.NONE)),
+            ft.DataCell(ft.TextField(value=str(price),border=ft.InputBorder.NONE)),
+            ft.DataCell(ft.TextField(value=str(stock),border=ft.InputBorder.NONE)),
+            ft.DataCell(ft.IconButton(icon=ft.icons.DELETE, icon_color="red"))
+        ]
 #NavigationColumn es un container con dos columns
 class NavigationColumn(ft.Container):
     def __init__(self, name=""):
@@ -75,10 +85,22 @@ class ManagerView(ft.View):
         self.title = title
         self.cont = ft.Row(controls=[], expand=True)
         self.controls = [self.cont]
-        self.BillingsPage = ft.Column(expand=True, visible=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        self.BillingsPage = ft.Column(expand=True, visible=False, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
         self.BillingRows = []
-        self.Inventory = ft.Column(expand=True, visible=False)
+        self.Inventory = ft.Column(expand=True, visible=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER)
+        self.InventoryRows = []
+        self._setupInventoryRows(range(5))
+        self._setupBillingRows([Billing(date="jujujuju"),Billing(date="tomorrow")])
         self._setup_view()
+
+    def _setupInventoryRows(self, items=[]):
+        for a in items:
+            self.InventoryRows.append(ItemRow())
+
+    def _setupBillingRows(self,billings:list):
+        self.BillingRows = []
+        for a in billings:
+            self.BillingRows.append(BillRow(a))
 
     def _setup_view(self):
         content = self.cont
@@ -87,21 +109,7 @@ class ManagerView(ft.View):
         content.controls.append(ft.VerticalDivider(width=1))
         content.controls.append(self.BillingsPage)
         content.controls.append(self.Inventory)
-        # Add a divider for visual separation
-
-        self.BillingRows =[
-            ft.DataRow(cells=
-            [
-                ft.DataCell(ft.Text("UWU")),
-                ft.DataCell(ft.Text("Escribe"))
-            ]),
-            ft.DataRow(cells=
-            [
-                ft.DataCell(ft.Text("UWU")),
-                ft.DataCell(ft.Text("Escribe"))
-            ])
-        ]
-
+        # Add a divider for visual separationç
         self.BillingsPage.controls = [
             ft.Text("Registro de Recibos diarios"),
             ft.Column(
@@ -112,6 +120,22 @@ class ManagerView(ft.View):
                         ft.DataColumn(ft.Text("Fecha de creación"))
                     ],
                     rows=self.BillingRows
+                    )]
+                )
+            ]
+
+        self.Inventory.controls = [
+            ft.Text("Inventario"),
+            ft.Column(
+                scroll=ft.ScrollMode.ADAPTIVE,
+                controls=[ft.DataTable(
+                    columns=[
+                        ft.DataColumn(ft.Text("Nombre item")),
+                        ft.DataColumn(ft.Text("    Precio    ")),
+                        ft.DataColumn(ft.Text("Cantidad")),
+                        ft.DataColumn(ft.Text("  ")),
+                    ],
+                    rows=self.InventoryRows
                     )]
                 )
             ]

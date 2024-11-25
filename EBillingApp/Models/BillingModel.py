@@ -1,3 +1,4 @@
+import random
 import xml.etree.ElementTree as ET
 IVA = 0.19
 
@@ -17,7 +18,7 @@ class Billing:
         self.total = 0
         
     def getName(self):
-        return ("GeneralBilling."+self.date)
+        return ("GeneralBilling."+str(random.randint(1000, 9999)))
     
     def _addItem(self, it:Item):
         self.items.append(it)
