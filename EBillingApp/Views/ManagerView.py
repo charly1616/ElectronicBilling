@@ -4,7 +4,7 @@ from datetime import datetime
 
 class BillRow(ft.DataRow):
     def __init__(self, billing:Billing,cells: list = None, **kwargs):
-        super().__init__(**kwargs)
+        super().__init__(cells=[],**kwargs)
         self.cells = [
             ft.DataCell(ft.TextButton(billing.getName())),
             ft.DataCell(ft.Text(billing.date))
@@ -12,8 +12,8 @@ class BillRow(ft.DataRow):
 
 
 class ItemRow(ft.DataRow):
-    def __init__(self, name="plumbus",price=30_000,stock=911):
-        super().__init__()
+    def __init__(self, name="plumbus",price=30_000,stock=911,cells: list = None, **kwargs):
+        super().__init__(cells=[],**kwargs)
         self.cells = [
             ft.DataCell(ft.TextField(value=name,border=ft.InputBorder.NONE)),
             ft.DataCell(ft.TextField(value=str(price),border=ft.InputBorder.NONE)),
