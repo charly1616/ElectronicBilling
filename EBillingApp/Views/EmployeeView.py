@@ -9,12 +9,10 @@ class EmployeeView(ft.View):
         self.scroll = "adaptive"
     
         # Datos iniciales
-        datos = [
-            {"Item": "Banana", "Cantidad": 2, "Subtotal": 2000},
-        ]
+        self.datos = []
 
         # Función para generar filas dinámicamente
-        def generar_filas():
+        def generarFilas():
             return [
                 ft.DataRow(
                     cells=[
@@ -23,35 +21,47 @@ class EmployeeView(ft.View):
                         ft.DataCell(ft.Text(fila["Subtotal"])),
                     ]
                 )
-                for fila in datos
+                for fila in self.datos
             ]
 
         # Crear la tabla dinámica
-        tabla = ft.DataTable(
+        self.variableQueContieneLaTabla = ft.DataTable(
             columns=[
                 ft.DataColumn(ft.Text("Item")),
                 ft.DataColumn(ft.Text("Cantidad")),
                 ft.DataColumn(ft.Text("Subtotal")),
             ],
-            rows=generar_filas(),
+            rows=generarFilas(),
         )
 
-        # Función para añadir "Erick, 20, Barranquilla" al hacer clic
-        def agregar_fila_fija(e):
-            datos.append({"Item": "Pera", "Cantidad": 1, "Subtotal": "1000"})
-            tabla.rows = generar_filas()
+        def agregarCosas(e):
+            self.datos.append({"Item": "Pera", "Cantidad": 1, "Subtotal": "1000"})
+            self.variableQueContieneLaTabla.rows = generarFilas()
             self.update()
 
-        # Botón para agregar la fila fija
-        boton_agregar_fijo = ft.ElevatedButton("Agregar pera", on_click=agregar_fila_fija)
+        self.botonParaAgregarCosas = ft.ElevatedButton("Agregar cosa", on_click=agregarCosas)
         
-        # Añadir componentes a la página
-        self.controls = [boton_agregar_fijo,
-            tabla]
+        def borrarCosasDeLaVariableQueContieneLaTabla(e):
+            self.variableQueContieneLaTabla.rows = []
+            self.datos = []
+            self.View.update()
+            
+        self.botonParaBorrarCosasDeLaVariableQueContieneLaTabla = ft.ElevatedButton("Reiniciar tabla", on_click=borrarCosasDeLaVariableQueContieneLaTabla)
+        
         self._setup_view()
 
     def _setup_view(self):
-        # Add a title at the top
-        self.controls.insert(0, ft.Text(self.title, size=24, weight="bold"))
-        # Add a divider for visual separation
-        self.controls.insert(1, ft.Divider())
+        
+        self.Columna = ft.Column(controls=[self.variableQueContieneLaTabla])
+        self.Texto = ft.Text("Texto")
+        self.Table = ft.Column(controls= [self.Columna, self.Texto])
+        
+        self.MenuCosa = ft.Container(content=ft.GridView())
+        self.Botones = ft.Row(controls=[self.botonParaAgregarCosas, self.botonParaBorrarCosasDeLaVariableQueContieneLaTabla])
+        self.Menu = ft.Column(controls= [self.MenuCosa, self.Botones])
+        
+        self.View = ft.Container(content=ft.Row(controls = [self.Table, self.Menu]))
+        
+        self.controls = [self.View]
+
+        
