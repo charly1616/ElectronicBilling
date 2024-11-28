@@ -1,13 +1,40 @@
-import flet as ft 
+import flet as ft
+import random
+import InformationCatcher as info
 
-
-class ItemButton(ft.Column):
-    def __init__(self, **kwargs):
+class ItemButton(ft.Container):
+    def __init__(self,father, pname="Fart in Glass", price = 1000, num = "0",productArray=[],**kwargs):
         super().__init__()
-        self.controls=[ft.Text("SUKMI",width=50, bgcolor=ft.colors.AMBER_600)]
+        self.pname = pname
+        self.price = price
+        self.num = num
+        self.father = father
+        self.content=ft.Column(
+            alignment=ft.MainAxisAlignment.CENTER,
+            expand=True,
+            spacing=0,
+            controls=
+            [ft.Text(f"[{self.num}]", text_align=ft.TextAlign.CENTER),
+            ft.Text(self.pname, text_align=ft.TextAlign.CENTER),
+            ft.Text(self.price, text_align=ft.TextAlign.CENTER)])
+        self.bgcolor=ft.colors.AMBER_600
+        self.border_radius = 5
+        self.width,self.height = 140,140
         self.visible = True
         self.expand = False
-        self.on_click = lambda _: print("clicked ujuju")
+
+        def addProduct(e):
+            value = [x for x in productArray if x["Item"] == pname]
+            if len(value) == 0:
+                productArray.append({"Item":pname,"Cantidad":1,"Subtotal":price})
+            else:
+                for a in value:
+                    a["Cantidad"]+=1
+                    a["Subtotal"]=price*a["Cantidad"]
+            father.variableQueContieneLaTabla.rows = father.generarFilas()
+            father.update()
+
+        self.on_click = addProduct if productArray != None else lambda _:print("Producto añadido")
         
 
 
@@ -18,12 +45,13 @@ class EmployeeView(ft.View):
         self.controls = []
         self.padding = 20
         self.scroll = "adaptive"
-        
+        self.Texto = ft.Text("Texto", height=60)
         # Datos iniciales
         self.datos = []
 
         # Función para generar filas dinámicamente
         def generarFilas():
+            self.Texto.value = "Total: " + str(sum(x["Subtotal"] for x in self.datos))
             return [
                 ft.DataRow(
                     cells=[
@@ -34,7 +62,7 @@ class EmployeeView(ft.View):
                 )
                 for fila in self.datos
             ]
-
+        self.generarFilas = generarFilas
         # Crear la tabla dinámica
         self.variableQueContieneLaTabla = ft.DataTable(
             columns=[
@@ -46,7 +74,6 @@ class EmployeeView(ft.View):
         )
 
         def agregarCosas(e):
-            self.datos.append({"Item": "Pera", "Cantidad": 1, "Subtotal": "1000"})
             self.variableQueContieneLaTabla.rows = generarFilas()
             self.update()
 
@@ -63,11 +90,20 @@ class EmployeeView(ft.View):
 
     def _setup_view(self):
         
-        self.Columna = ft.Column(controls=[self.variableQueContieneLaTabla], height=450, scroll= ft.ScrollMode.ADAPTIVE)
+        self.Columna = ft.Column(controls=[self.variableQueContieneLaTabla], height=450, width=400, scroll= ft.ScrollMode.ADAPTIVE)
         self.Texto = ft.Text("Texto", height=60)
         self.Table = ft.Column(controls= [self.Columna, self.Texto])
         
-        self.MenuCosa = ft.Container(content=ft.GridView(controls=[ItemButton() for a in range(6)] , height=300,width=300, expand=False))
+        self.MenuCosa = ft.Container(content=ft.GridView(
+            controls=[ItemButton(
+                num=i, pname=a["name"],price=a["price"],
+                productArray=self.datos,
+                father = self
+                ) for i,a in enumerate(info.getProducts())] , height=340,width=540,
+            max_extent=135,
+            expand=1,
+            runs_count=6,
+            ))
         self.Botones = ft.Row(controls=[self.botonParaAgregarCosas, self.botonParaBorrarCosasDeLaVariableQueContieneLaTabla], height=60)
         self.Menu = ft.Column(controls= [self.MenuCosa, self.Botones],height= 450, width=450)
         

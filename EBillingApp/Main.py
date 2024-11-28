@@ -5,7 +5,7 @@ from Views.ManagerView import ManagerView
 from Views.EmployeeView import EmployeeView
 
 def main(page: ft.Page):
-    page.window_width = 900
+    page.window_width = 960
     page.window_height = 600
     loginView = LoginView(title="Login Page")
     registerView = RegisterView(title="Register Page")
