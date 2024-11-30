@@ -9,6 +9,7 @@ class ItemButton(ft.Container):
         self.price = price
         self.num = num
         self.father = father
+        #EL CONTENIDO DEL BOTON ES UNA COLUMNA CON TEXTO
         self.content=ft.Column(
             alignment=ft.MainAxisAlignment.CENTER,
             expand=True,
@@ -23,6 +24,7 @@ class ItemButton(ft.Container):
         self.visible = True
         self.expand = False
 
+        #FUNCION QUE AÑADE PRODUCTO CUANDO SE LE UNDE
         def addProduct(e):
             value = [x for x in productArray if x["Item"] == pname]
             if len(value) == 0:
@@ -33,7 +35,10 @@ class ItemButton(ft.Container):
                     a["Subtotal"]=price*a["Cantidad"]
             father.variableQueContieneLaTabla.rows = father.generarFilas()
             father.update()
+        
 
+
+        #SI EL BOTON NO TIENE ACCION ENTONCES SE IMPRIME UN MENSAJE
         self.on_click = addProduct if productArray != None else lambda _:print("Producto añadido")
         
 
@@ -73,11 +78,12 @@ class EmployeeView(ft.View):
             rows=generarFilas(),
         )
 
+        #FUNCION QUE AÑADE COSAS A LA TABLA
         def agregarCosas(e):
             self.variableQueContieneLaTabla.rows = generarFilas()
             self.update()
 
-        self.botonParaAgregarCosas = ft.ElevatedButton("Agregar cosa", on_click=agregarCosas)
+        self.botonParaAgregarCosas = ft.ElevatedButton("Facturar", on_click=agregarCosas)
         
         def borrarCosasDeLaVariableQueContieneLaTabla(e):
             self.variableQueContieneLaTabla.rows = []
@@ -92,20 +98,20 @@ class EmployeeView(ft.View):
         
         self.Columna = ft.Column(controls=[self.variableQueContieneLaTabla], height=450, width=400, scroll= ft.ScrollMode.ADAPTIVE)
         self.Texto = ft.Text("Texto", height=60)
-        self.Table = ft.Column(controls= [self.Columna, self.Texto])
+        self.Table = ft.Column(controls= [self.Columna, self.Texto], alignment= ft.MainAxisAlignment.SPACE_BETWEEN, height= 520)
         
         self.MenuCosa = ft.Container(content=ft.GridView(
             controls=[ItemButton(
                 num=i, pname=a["name"],price=a["price"],
                 productArray=self.datos,
                 father = self
-                ) for i,a in enumerate(info.getProducts())] , height=340,width=540,
+                ) for i,a in enumerate(info.getProducts())] , height=460,width=540,
             max_extent=135,
             expand=1,
             runs_count=6,
             ))
         self.Botones = ft.Row(controls=[self.botonParaAgregarCosas, self.botonParaBorrarCosasDeLaVariableQueContieneLaTabla], height=60)
-        self.Menu = ft.Column(controls= [self.MenuCosa, self.Botones],height= 450, width=450)
+        self.Menu = ft.Column(controls= [self.MenuCosa, self.Botones],height= 520, width=450, alignment= ft.MainAxisAlignment.SPACE_BETWEEN)
         
         self.View = ft.Container(content=ft.Row(controls = [self.Table, self.Menu]))
         

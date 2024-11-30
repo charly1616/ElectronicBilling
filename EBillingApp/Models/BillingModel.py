@@ -10,8 +10,8 @@ class Item:
         pass
 
 class Billing:
-    def __init__(self, company = "",NIT = "8=====D", paidAmount=0, date=""):
-        self.items = []
+    def __init__(self, company = "",NIT = "8=====D", paidAmount=0, date="", items=[]):
+        self.items = items
         self.date = date
         self.paidAmount = paidAmount
         self.subtotal = 0

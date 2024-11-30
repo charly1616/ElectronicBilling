@@ -14,11 +14,15 @@ class BillRow(ft.DataRow):
 class ItemRow(ft.DataRow):
     def __init__(self, name="plumbus",price=30_000,stock=911,cells: list = None, **kwargs):
         super().__init__(cells=[],**kwargs)
+
+        deleteButton = ft.IconButton(icon=ft.icons.DELETE, icon_color="red")
+        
+
         self.cells = [
             ft.DataCell(ft.TextField(value=name,border=ft.InputBorder.NONE)),
             ft.DataCell(ft.TextField(value=str(price),border=ft.InputBorder.NONE)),
             ft.DataCell(ft.TextField(value=str(stock),border=ft.InputBorder.NONE)),
-            ft.DataCell(ft.IconButton(icon=ft.icons.DELETE, icon_color="red"))
+            ft.DataCell(deleteButton)
         ]
 #NavigationColumn es un container con dos columns
 class NavigationColumn(ft.Container):
