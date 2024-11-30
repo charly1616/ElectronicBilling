@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 IVA = 0.19
 
 class Item:
-    def __init__(self, name, quantity, unitPrice):
+    def __init__(self,id, name, quantity, unitPrice):
         self.name = name
         self.quantity = quantity
         self.unitPrice = unitPrice

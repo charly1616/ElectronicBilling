@@ -84,7 +84,7 @@ class NavigationColumn(ft.Container):
 
  
 class ManagerView(ft.View):
-    def __init__(self, title: str = "Default Title", controls: list = None, **kwargs):
+    def __init__(self,title: str = "Default Title", controls: list = None, **kwargs):
         super().__init__(route="/login", **kwargs)  # You must provide a `route` for the view
         self.title = title
         self.cont = ft.Row(controls=[], expand=True)

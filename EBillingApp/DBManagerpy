@@ -1,0 +1,76 @@
+import sqlite3
+from Models import BillingModel as bm
+
+
+TIPOS_USUARIOS = ["MANAGER","EMPLOYEE"]
+connection = sqlite3.connect('ebilling.db')
+cursor = connection.cursor()
+
+
+def findUser(email,password):
+    cursor.execute("""SELECT USUARIO_ID FROM USUARIOS WHERE CORREO = ? AND CONTRASENA = ?"""
+                   ,(email,password))
+    fetch = cursor.fetchall()
+    if fetch[0][0] == None: return -1
+    else: return fetch[0][0]
+
+def findUserCompany(id):
+    cursor.execute("""SELECT EMPRESA_ID FROM USUARIOS WHERE USUARIO_ID = ?""", (id,))
+    fetch = cursor.fetchall()
+    if fetch[0][0] != None:
+        return fetch[0][0]
+    else: return -1
+    
+
+
+def getLastUserID():
+    cursor.execute("""SELECT MAX(USUARIO_ID) FROM USUARIOS""")
+    fetch = cursor.fetchall()
+    if fetch[0][0] != None:
+        return int(fetch[0][0])
+    else:
+        return -1
+
+
+def registerUser(email,password, name):
+    cursor.execute("""INSERT INTO USUARIOS(USUARIO_ID, CONTRASENA, NOMBRE, CORREO, EMPRESA_ID) VALUES(?,?,?,?,?)""", (getLastUserID()+1,password,name,email,0))
+    connection.commit()
+
+
+
+def getProducts(company_id):
+    cursor.execute("""SELECT * FROM PRODUCTOS WHERE EMPRESA_ID = ?""",(company_id,))
+    fetch = cursor.fetchall()
+    items = []
+    for eid, name, amount, price, company in fetch:
+        items.append(bm.Item(id=eid,name=name,quantity=amount,unitPrice=price))
+    return items
+
+def getLastProductId():
+    cursor.execute("""SELECT MAX(PRODUCTO_ID) FROM PRODUCTOS""")
+    fetch = cursor.fetchall()
+    if fetch[0][0] != None:
+        return int(fetch[0][0])
+    else:
+        return -1
+
+
+def UpdateOrInsertProduct(iid, name,amount,price):
+    cursor.execute("""SELECT * FROM PRODUCTOS WHERE PRODUCTO_ID = ?""",(iid,))
+    fetch = cursor.fetchall()
+    if fetch[0][0] != None:
+        cursor.execute("""UPDATE PRODUCTOS SET NOMBRE = ?, CANTIDAD = ?, PRECIO = ? WHERE PRODUCTO_ID = ?""",(name,amount,price,iid))
+    else:
+        cursor.execute("""INSERT INTO PRODUCTOS(PRODUCTO_ID, NOMBRE, CANTIDAD, PRECIO) VALUES(?,?,?,?)""",(iid,name,amount,price))
+    connection.commit()
+    
+
+
+def DeleteProduct(iid):
+    cursor.execute("""DELETE FROM PRODUCTOS WHERE PRODUCTO_ID = ?""",(iid,))
+    connection.commit()
+
+
+
+
+

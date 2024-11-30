@@ -4,6 +4,12 @@ from Views.RegisterView import RegisterView
 from Views.ManagerView import ManagerView
 from Views.EmployeeView import EmployeeView
 
+
+empresa_id = 0
+inventario = []
+
+
+
 def main(page: ft.Page):
     page.window_width = 960
     page.window_height = 600

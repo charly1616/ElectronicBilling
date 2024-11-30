@@ -13,6 +13,7 @@ class RegisterView(ft.View):
         image = ft.Container(height=380,width=380,bgcolor=ft.colors.WHITE)
         LoginPart = ft.Column()
         LoginPart.controls.append(ft.Text("Registro", size=24))
+        LoginPart.controls.append(ft.TextField(label="Nombre"))
         LoginPart.controls.append(ft.TextField(label="Email"))
         LoginPart.controls.append(ft.TextField(label="Contraseña", password=True))
         LoginPart.controls.append(ft.ElevatedButton("Registrarse", on_click=lambda _: self.page.go("Manager")))
