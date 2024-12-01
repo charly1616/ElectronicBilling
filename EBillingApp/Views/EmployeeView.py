@@ -3,11 +3,12 @@ import random
 import InformationCatcher as info
 
 class ItemButton(ft.Container):
-    def __init__(self, pname="Fart in Glass", price = 1000, num = "0",productArray=[],**kwargs):
+    def __init__(self, father,pname="Fart in Glass", price = 1000, num = "0",productArray=[],**kwargs):
         super().__init__()
         self.pname = pname
         self.price = price
         self.num = num
+        self.father = father
         #EL CONTENIDO DEL BOTON ES UNA COLUMNA CON TEXTO
         self.content=ft.Column(
             alignment=ft.MainAxisAlignment.CENTER,

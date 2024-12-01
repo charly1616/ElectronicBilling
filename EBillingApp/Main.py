@@ -5,10 +5,6 @@ from Views.ManagerView import ManagerView
 from Views.EmployeeView import EmployeeView
 
 
-empresa_id = 0
-inventario = []
-
-
 
 def main(page: ft.Page):
     page.window_width = 960
@@ -18,7 +14,6 @@ def main(page: ft.Page):
     managerView = ManagerView(title="Manager")
     employeeView = EmployeeView()
 
-    page.route = "Employee"
     def get_route_list(route):
         route_list = [item for item in route.split("/") if item != ""]
         return route_list
