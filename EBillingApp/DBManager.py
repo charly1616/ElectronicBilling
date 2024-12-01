@@ -1,15 +1,11 @@
 import sqlite3
 from Models import BillingModel as bm
 
-
 userLogged = -1
 empresa_id = -1
 inventario = []
 
-
-
 TIPOS_USUARIOS = ["MANAGER","EMPLOYEE"]
-
 
 #DEVUELVE LA IDE DEL USUARIO CON LOS PARAMETROS Y -1 SI NO SE ENCUENTRA
 def findUser(email,password):
@@ -33,7 +29,6 @@ def findUserCompany(id):
         return fetch[0][0]
     else: return -1
     
-
 #ULTIMO USUARIO
 def getLastUserID():
     connection = sqlite3.connect('ebilling.db')
@@ -46,7 +41,6 @@ def getLastUserID():
     else:
         return -1
 
-
 #SI UN USUARIO CON ID ES MANAGER
 def isUserManager(id):
     connection = sqlite3.connect('ebilling.db')
@@ -57,7 +51,6 @@ def isUserManager(id):
     if fetch[0][0] != None:
         return fetch[0][0] == TIPOS_USUARIOS[0]
 
-
 #COLOCA UN NUEVO USUARIO EN LA BASE DE DATOS
 def registerUser(email,password, name):
     connection = sqlite3.connect('ebilling.db')
@@ -65,7 +58,6 @@ def registerUser(email,password, name):
     cursor.execute("""INSERT INTO USUARIOS(USUARIO_ID, CONTRASENA, NOMBRE, CORREO, EMPRESA_ID) VALUES(?,?,?,?,?)""", (getLastUserID()+1,password,name,email,0))
     connection.commit()
     connection.close()
-
 
 #OBTENER LOS PRODUCTOS DEVUELVE UN ARRAY CON OBJETOS DE TIPO ITEM
 def getProducts(company_id):
@@ -104,7 +96,6 @@ def UpdateOrInsertProduct(iid, name,amount,price):
     connection.commit()
     connection.close()
     
-
 # BORRA PRODUCTO 
 def DeleteProduct(iid):
     connection = sqlite3.connect('ebilling.db')
@@ -112,8 +103,3 @@ def DeleteProduct(iid):
     cursor.execute("""DELETE FROM PRODUCTOS WHERE PRODUCTO_ID = ?""",(iid,))
     connection.commit()
     connection.close()
-
-
-
-
-
